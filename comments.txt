@@ -1,25 +1,42 @@
-language: node_js
-node_js:
-  - 13
+language: minimal
 
 services:
   - docker
 
 # Pre-testing installs
-install:
-  - echo "nothing needs to be installed"
-
-# Scripts to be run such as tests
-before_script:
-  - echo "no tests"
-
+before_install:
+  - docker -v && docker-compose -v
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  
 script:
   - docker --version # print the version for logging
   - docker build -t udagram-restapi-user .
   - docker build -t udagram-restapi-feed .
-  - docker build -t udagram-frontend .
+  - docker build -t 26121226/udagram-frontend .
   - docker tag simple-node 26121226/simple-node:latest
 
 after_success:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker push 26121226/simple-node
+
+
+  language: minimal
+
+services: docker
+
+env:
+  - DOCKER_COMPOSE_VERSION=1.26.2.
+  
+
+before_install:
+  - docker -v && docker-compose -v
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
+install:
+  - docker-compose -f docker-compose-build.yaml build --parallel
