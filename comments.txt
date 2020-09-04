@@ -1,16 +1,18 @@
 language: minimal
+node_js:
+  - 12
 
 services:
   - docker
 
 # Pre-testing installs
-before_install:
-  - docker -v && docker-compose -v
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
-  
+install:
+  - echo "nothing needs to be installed"
+
+# Scripts to be run such as tests
+before_script:
+  - echo "no tests"
+
 script:
   - docker --version # print the version for logging
   - docker build -t udagram-restapi-user .
