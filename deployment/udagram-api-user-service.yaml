@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Service
+metadata:
+  name: udagram-restapi-user
+  labels:
+    run: udagram-restapi-user
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+  selector:
+    run: udagram-restapi-user
