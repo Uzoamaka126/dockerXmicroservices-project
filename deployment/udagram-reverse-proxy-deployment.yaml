@@ -15,40 +15,16 @@ spec:
         service: udagram-reverse-proxy
     spec:
       containers:
-      - image: 26121226/udagram-reverse-proxy
-        name: udagram-reverse-proxy
-        imagePullPolicy: Always          
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "1024Mi"
-            cpu: "500m" 
-      # db:
-      #   container_name: "psql"
-      #   image: postgres
-      #   ports:
-      #     - "5432:5432"
-        env:
-          - name: POSTGRES_DB
-            valueFrom:
-              configMapKeyRef:
-                name: env-config
-                key: POSTGRES_DB
-          - name: POSTGRES_HOST
-            valueFrom:
-              configMapKeyRef:
-                name: env-config
-                key: POSTGRES_HOST
-          - name: POSTGRES_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: env-secret
-                key: POSTGRES_PASSWORD
-          - name: POSTGRES_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: env-secret
-                key: POSTGRES_USERNAME          
+        - image: 26121226/udagram-reverse-proxy-2
+          name: udagram-reverse-proxy
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "1024Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8080
       restartPolicy: Always
